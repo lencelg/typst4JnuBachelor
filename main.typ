@@ -6,6 +6,7 @@
 #show: jnu-thesis.with(
   title: title,
   title-en: title-en,
+  chapter-pagebreak: false,
   short-title: title,
   college: "Steam",
   major: "Gaming",
@@ -14,10 +15,10 @@
   supervisor: "暨大大",
   date: "二〇二六年六月",
   abstract: [
-    针对暨南大学本科毕业论文的排版需求，设计并实现了一套基于 Typst 的论文模板。模板依据学校本科毕业论文撰写规范，对页面尺寸、页边距、字体字号、行距、标题层级、页眉页码以及图表公式编号等要素进行了统一设置。模板将封面、诚信声明、中英文摘要、目录等前置部分与正文样式封装为可复用函数，使用者只需填写论文信息并撰写正文，即可自动生成符合规范的版面。测试结果表明，该模板能够稳定完成中英文混排、图表按章编号、参考文献顺序编码与上标引用等任务，在保证排版质量的同时显著提高了写作效率。
+    针对暨南大学本科毕业论文的排版需求，设计并实现了一套基于 Typst 的论文模板。模板依据学校本科毕业论文撰写规范，对页面尺寸、页边距、字体字号、行距、标题层级、页眉页码以及图表公式编号等要素进行了统一设置。模板将封面、诚信声明、中英文摘要、目录等前置部分与正文样式封装为可复用函数，使用者只需填写论文信息并撰写正文，即可自动生成符合规范的版面。
   ],
   abstract-en: [
-    To meet the typesetting requirements of undergraduate theses at Jinan University, this paper designs and implements a thesis template based on Typst. Following the university's writing standards, the template unifies page size, margins, fonts, line spacing, heading hierarchy, running headers, page numbers, and the numbering of figures, tables, and equations. The cover, integrity statement, Chinese and English abstracts, table of contents, and body styles are encapsulated as reusable functions, so that users only need to fill in the thesis information and write the main text. Tests show that the template handles mixed Chinese and English typesetting, chapter-based numbering, and GB/T 7714 numeric citations reliably, improving both typesetting quality and writing efficiency.
+    To meet the typesetting requirements of undergraduate theses at Jinan University, this paper designs and implements a thesis template based on Typst. Following the university's writing standards, the template unifies page size, margins, fonts, line spacing, heading hierarchy, running headers, page numbers, and the numbering of figures, tables, and equations. The cover, integrity statement, Chinese and English abstracts, table of contents, and body styles are encapsulated as reusable functions.
   ],
   keywords: ("毕业论文", "Typst", "排版模板", "暨南大学", "自动化排版"),
   keywords-en: ("Thesis", "Typst", "Typesetting template", "Jinan University", "Automated typesetting"),
