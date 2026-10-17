@@ -1,14 +1,3 @@
-// ============================================================================
-//  暨南大学本科毕业论文 —— 示例文档
-//
-//  编译：typst compile main.typ
-//
-//  使用方法：
-//    1. 修改下方 #show: jnu-thesis.with(...) 中的封面信息、摘要与关键词；
-//    2. 直接在“正文”标记之后撰写各章节内容；
-//    3. 文献条目写在 res/refs.bib，正文用 @key 或 #cite(<key>) 引用。
-// ============================================================================
-
 #import "lib.typ": jnu-thesis
 
 #let title = "暨南大学本科毕业论文 Typst 模板"
@@ -18,10 +7,10 @@
   title: title,
   title-en: title-en,
   short-title: title,
-  college: "信息科学技术学院",
-  major: "数学与应用数学",
-  author: "暨小小",
-  student-id: "2018059999",
+  college: "Steam",
+  major: "Gaming",
+  author: "布置倒",
+  student-id: "114514",
   supervisor: "暨大大",
   date: "二〇二六年六月",
   abstract: [
@@ -131,7 +120,6 @@ $ integral_0^1 x^2 dif x = 1/3 $ <eq-demo>
 
 标题层级通过编号格式 `1.1.1.1` 控制，最多支持四级。每章开始时，模板自动清零图、表、公式计数器，从而保证编号在章内连续。参考文献使用 GB/T 7714—2015 顺序编码制，正文引用由 `cite` 的样式规则转换为上标#footnote[具体要求见《信息与文献　参考文献著录规则》（GB/T 7714—2015）。]。
 
-// 结论作为单独一章排列，但不加章号。
 #heading(numbering: none)[结论]
 
 本文围绕暨南大学本科毕业论文的排版规范，完成了一套基于 Typst 的模板设计与实现。模板覆盖了封面、诚信声明、中英文摘要、目录、正文、图表、公式、参考文献与附录等主要环节，并通过统一的样式函数保证了版面的一致性。
@@ -140,28 +128,33 @@ $ integral_0^1 x^2 dif x = 1/3 $ <eq-demo>
 
 #heading(numbering: none)[致谢]
 
-感谢我的导师暨大大老师，谢谢他在论文写作过程中给予的悉心指导。他严谨的治学态度和无私的关爱，将激励我不断进取。其次，还要感谢四年中教过我的所有老师，谢谢他们传授给我的知识。我的同学暨小小在资料收集和版面测试方面提供了许多帮助，在此一并致谢！
+  LOL。
+
+感谢我的导师暨大大老师，谢谢他在论文写作过程中给予的悉心指导。他严谨的治学态度和无私的关爱，将激励我不断进取。其次，还要感谢四年中教过我的所有老师，谢谢他们对于逃课的态度很好，让我在Steam上贡献了大量时间研究并不断在社区里面提升自我实力。
+我的同学暨小小在Steam上的Gaming项目也给予了我很多的帮助，在此一并致谢！
 
 #heading(numbering: none)[附录 A]
 
 以下为模板的基本调用方式，供使用者参考。
 
 ```typst
-#import "lib.typ": jnu-thesis
+      #import "lib.typ": jnu-thesis
 
-#show: jnu-thesis.with(
-  title: "论文题目",
-  author: "姓名",
-  college: "学院",
-  major: "专业",
-  student-id: "学号",
-  supervisor: "指导教师",
-  date: "二〇二六年六月",
-  abstract: [中文摘要],
-  keywords: ("关键词1", "关键词2"),
-  bib: "res/refs.bib",
-)
-
-= 绪论
-正文内容……
+      #show: jnu-thesis.with(
+        title: "论文题目",
+        title-en: "英文题目",
+        author: "姓名",
+        college: "学院",
+        major: "专业",
+        student-id: "学号",
+        supervisor: "指导教师",
+        date: "二〇二六年六月",
+        abstract: [中文摘要],
+        keywords: ("关键词1", "关键词2"),
+        bib: "res/refs.bib",
+      )
 ```
+
+#heading(numbering: none)[附录 B]
+
+nothing here
