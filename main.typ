@@ -1,51 +1,10 @@
-//  jnu-thesis 参数速查（完整说明见 lib.typ 中 jnu-thesis 的文档注释）
-
-//  paper-type: "thesis" / "report"           论文 / 调研报告
-//  include-statement: auto / true / false    诚信声明（auto：论文显示，报告隐藏）
-//  include-abstract-en: auto / true / false  英文摘要（auto 同上）
-//
-//  title: "题目" / ("第一行", "第二行")      报告模式下数组用于封面换行
-//  title-en: "英文题目"
-//  short-title: "页眉短标题"                 缺省使用 title
-//  college / major / author / student-id     论文封面字段
-//  supervisor: "指导教师"                    报告封面显示为“指导老师”
-//  date: "二〇二六年六月"
-//
-//  ---- 摘要与关键词 ----
-//  abstract / abstract-en: [ ... ]
-//  keywords / keywords-en: ("关键词1", "关键词2")
-//
-//  ---- 调研报告专用 ----
-//  course: "课程名" / ("第一行", "第二行")
-//  class-name: "2024 级金融工程"
-//  score: ""
-//  team: ((name: "张三", student-id: "2024...", work: "资料收集"), ...)
-//        为空时生成 4 行空白行
-//
-//  ---- 参考文献与排版 ----
-//  bib: "res/refs.bib" / none
-//  logo: "res/jnulogo.png"
-//  chapter-pagebreak: false / true           编号章节是否另起一页
-//  leading: 0.83em                           行距（约 1.5 倍）
-//  sizes: (body: 14pt, heading: 15pt, ...)   字号覆盖
-//
-//  报告模式最小改动：
-//    paper-type: "report",
-//    title: ("调查题目第一行", "第二行"),
-//    course: ("课程名称第一行", "第二行"),
-//    class-name: "2024 级金融工程",
-//    supervisor: "指导老师",
-//    date: "2026 年 5 月",
-//    team: (...)
-// ============================================================================
-
 #import "lib.typ": jnu-thesis
 
 #let title = "暨南大学本科毕业论文 Typst 模板"
 #let title-en = "A Typst Template for Jinan University Undergraduate Theses"
 
 #show: jnu-thesis.with(
-  paper-type: "thesis",          // 改成 "report" 即切换调研报告
+  paper-type: "thesis",
 
   title: title,
   title-en: title-en,
@@ -104,10 +63,6 @@
 
 = 绪论
 
-#pagebreak()
-
-= 系统分析
-
 == 插图
 插图示例：@fig-logo 给出了示例。
 
@@ -163,13 +118,11 @@ $ integral_0^1 x^2 dif x = 1/3 $ <eq-demo>
 
 #heading(numbering: none)[附录 A]
 
-以下分别给出论文与调研报告两种模式的基本调用方式。未写出的参数使用默认值；字号、行距等排版参数可通过 `sizes` 和 `leading` 覆盖，完整清单见 `main.typ` 顶部的参数速查。
+以下分别给出论文与调研报告两种模式的基本调用方式。
 
 论文模式：
 
 ```typst
-#import "lib.typ": jnu-thesis
-
 #show: jnu-thesis.with(
   paper-type: "thesis",
   title: "论文题目",
@@ -214,7 +167,12 @@ $ integral_0^1 x^2 dif x = 1/3 $ <eq-demo>
 )
 ```
 
-报告模式默认不显示诚信声明和英文摘要；如需显示，加入 `include-statement: true`、`include-abstract-en: true`，并同时填写 `abstract-en`、`keywords-en` 和 `title-en`。
+报告模式默认不显示诚信声明和英文摘要；
+
+如需显示，请修改：
+- `include-statement: true`
+- `include-abstract-en: true`
+- 并同时填写 `abstract-en`、`keywords-en` 和 `title-en`。
 
 #heading(numbering: none)[附录 B]
 

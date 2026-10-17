@@ -34,7 +34,7 @@
 
 #let jnu-chapter-drop = 0.9cm
 
-// 值为 auto 的项会自动跟随 body（正文字号）。
+// auto 的项会自动跟随正文字号
 #let jnu-default-sizes = (
   body: jnu-body-size,          // 正文
   heading: jnu-heading-size,    // 各级标题
