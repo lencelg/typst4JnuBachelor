@@ -43,6 +43,7 @@
   //   footer: 10.5pt,        // 页码
   // ),
   // leading: 0.83em,  // 行距，约 1.5 倍
+  // chapter-pagebreak: true,  // 编号章节另起一页（默认 false）
 )
 
 = 绪论

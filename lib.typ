@@ -303,6 +303,7 @@
   note-size: 9pt,
   code-size: 10.5pt,
   reference-size: 10.5pt,
+  chapter-pagebreak: false,
   leading: jnu-leading,
 ) = {
   set text(font: jnu-serif, size: size, lang: "zh")
@@ -328,9 +329,13 @@
   show heading.where(level: 1): set block(above: 0em, below: 1.4em)
   show heading.where(level: 2): set block(above: 1.4em, below: 0.6em)
 
-  // 每章另起一页，并清零图、表、公式计数器，实现按章编号。
+  // 编号章节是否另起一页由 chapter-pagebreak 控制；
+  // 结论、致谢、附录、参考文献等无编号标题始终另起一页。
+  // 同时清零图、表、公式计数器，实现按章编号。
   show heading.where(level: 1): it => {
-    pagebreak(weak: true)
+    if chapter-pagebreak or it.numbering == none {
+      pagebreak(weak: true)
+    }
     v(jnu-chapter-drop)
     counter(figure.where(kind: image)).update(0)
     counter(figure.where(kind: table)).update(0)
@@ -408,6 +413,7 @@
 /// - `keywords` / `keywords-en`：关键词数组
 /// - `bib`：参考文献 .bib 文件路径；设为 `none` 则不自动生成参考文献页
 /// - `sizes`：字号覆盖，例如 `(body: 12pt, heading: 14pt)`
+/// - `chapter-pagebreak`：编号章节是否另起一页，默认 `false`
 /// - `leading`：行距，默认 `0.83em`（约 1.5 倍）
 #let jnu-thesis(
   title: "",
@@ -426,6 +432,7 @@
   bib: none,
   logo: "res/jnulogo.png",
   sizes: (:),
+  chapter-pagebreak: false,
   leading: jnu-leading,
   body,
 ) = {
@@ -528,6 +535,7 @@
     note-size: sz.note,
     code-size: sz.code,
     reference-size: sz.reference,
+    chapter-pagebreak: chapter-pagebreak,
     leading: leading,
   )
 }
