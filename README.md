@@ -185,3 +185,7 @@
   caption: [排版工具比较],
 )
 ```
+
+# PS
+
+repo的命名参考了[yueryang/LaTeX4JNUBachelor](https://github.com/yueryang/LaTeX4JNUBachelor)
