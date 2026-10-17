@@ -1,5 +1,8 @@
 [简体中文](README.md) | **English**
+ 
 <h1>Jinan University Undergraduate Thesis / Research Report Typst Template</h1>
+
+This template was created with reference to **the PDF file exported from Teacher Jianrui Lü’s template.**
 
 > [!NOTE]
 >
@@ -188,3 +191,8 @@ Literate programming is discussed in #cite(<knuth1984>).
   caption: [排版工具比较],
 )
 ```
+
+
+# PS
+
+The repository was named with reference to [yueryang/LaTeX4JNUBachelor](https://github.com/yueryang/LaTeX4JNUBachelor)
