@@ -1,19 +1,70 @@
+// ============================================================================
+//  jnu-thesis 参数速查（完整说明见 lib.typ 中 jnu-thesis 的文档注释）
+//
+//  ---- 文档类型与前置页 ----
+//  paper-type: "thesis" / "report"           论文 / 调研报告
+//  include-statement: auto / true / false    诚信声明（auto：论文显示，报告隐藏）
+//  include-abstract-en: auto / true / false  英文摘要（auto 同上）
+//
+//  ---- 题名与封面信息 ----
+//  title: "题目" / ("第一行", "第二行")      报告模式下数组用于封面换行
+//  title-en: "英文题目"
+//  short-title: "页眉短标题"                 缺省使用 title
+//  college / major / author / student-id     论文封面字段
+//  supervisor: "指导教师"                    报告封面显示为“指导老师”
+//  date: "二〇二六年六月"
+//
+//  ---- 摘要与关键词 ----
+//  abstract / abstract-en: [ ... ]
+//  keywords / keywords-en: ("关键词1", "关键词2")
+//
+//  ---- 调研报告专用 ----
+//  course: "课程名" / ("第一行", "第二行")
+//  class-name: "2024 级金融工程"
+//  score: ""
+//  team: ((name: "张三", student-id: "2024...", work: "资料收集"), ...)
+//        为空时生成 4 行空白行
+//
+//  ---- 参考文献与排版 ----
+//  bib: "res/refs.bib" / none
+//  logo: "res/jnulogo.png"
+//  chapter-pagebreak: false / true           编号章节是否另起一页
+//  leading: 0.83em                           行距（约 1.5 倍）
+//  sizes: (body: 14pt, heading: 15pt, ...)   字号覆盖
+//
+//  报告模式最小改动：
+//    paper-type: "report",
+//    title: ("调查题目第一行", "第二行"),
+//    course: ("课程名称第一行", "第二行"),
+//    class-name: "2024 级金融工程",
+//    supervisor: "指导老师",
+//    date: "2026 年 5 月",
+//    team: (...)
+// ============================================================================
+
 #import "lib.typ": jnu-thesis
 
 #let title = "暨南大学本科毕业论文 Typst 模板"
 #let title-en = "A Typst Template for Jinan University Undergraduate Theses"
 
 #show: jnu-thesis.with(
+  // ---- 文档类型与前置页 ----
+  paper-type: "thesis",          // 改成 "report" 即切换调研报告
+  // include-statement: auto,    // auto：论文显示，报告隐藏
+  // include-abstract-en: auto,
+
+  // ---- 题名与封面信息 ----
   title: title,
   title-en: title-en,
-  chapter-pagebreak: false,
-  short-title: title,
+  short-title: title,             // 报告模式建议改为“学生实践调查报告”
   college: "Steam",
   major: "Gaming",
   author: "布置倒",
   student-id: "114514",
   supervisor: "暨大大",
   date: "二〇二六年六月",
+
+  // ---- 摘要与关键词 ----
   abstract: [
     针对暨南大学本科毕业论文的排版需求，设计并实现了一套基于 Typst 的论文模板。模板依据学校本科毕业论文撰写规范，对页面尺寸、页边距、字体字号、行距、标题层级、页眉页码以及图表公式编号等要素进行了统一设置。模板将封面、诚信声明、中英文摘要、目录等前置部分与正文样式封装为可复用函数，使用者只需填写论文信息并撰写正文，即可自动生成符合规范的版面。
   ],
@@ -22,7 +73,21 @@
   ],
   keywords: ("毕业论文", "Typst", "排版模板", "暨南大学", "自动化排版"),
   keywords-en: ("Thesis", "Typst", "Typesetting template", "Jinan University", "Automated typesetting"),
+
+  // ---- 调研报告专用（paper-type: "report" 时填写） ----
+  // course: ("课程名第一行", "课程名第二行"),
+  // class-name: "2024 级金融工程",
+  // score: "",
+  // team: (
+  //   (name: "张三", student-id: "2024xxxxxx", work: "资料收集"),
+  //   (name: "李四", student-id: "2024xxxxxx", work: "问卷设计与数据分析"),
+  // ),
+
+  // ---- 参考文献与排版 ----
   bib: "res/refs.bib",
+  chapter-pagebreak: false,      // 编号章节是否另起一页
+  leading: 0.83em,               // 行距，约 1.5 倍
+  // logo: "res/jnulogo.png",    // 默认使用 res/jnulogo.png
 
   // 字号可按需覆盖（未写的项使用 lib.typ 中的默认值；auto 表示跟随 body）：
   // sizes: (
@@ -31,11 +96,11 @@
   //   caption: 10.5pt,     // 图、表标题（五号）
   //   note: 9pt,           // 脚注（小五）
   //   code: 10.5pt,        // 代码块
-  //   cover-title: 36pt,   // 封面“暨南大学 / 本科生毕业论文”
-  //   cover-info: auto,    // 封面信息栏与日期
+  //   cover-title: 36pt,   // 封面标题
+  //   cover-info: auto,    // 封面信息栏（跟随 body）
   //   statement-title: 22pt, // 诚信声明标题
   //   statement-body: auto,  // 诚信声明正文
-  //   abstract-title: 18pt,  // 摘要页论文题目
+  //   abstract-title: 18pt,  // 摘要页标题
   //   abstract-body: auto,   // 摘要正文
   //   reference: auto,       // 参考文献条目
   //   toc-title: 24pt,       // 目录标题
@@ -43,8 +108,6 @@
   //   header: 10.5pt,        // 页眉
   //   footer: 10.5pt,        // 页码
   // ),
-  // leading: 0.83em,  // 行距，约 1.5 倍
-  // chapter-pagebreak: true,  // 编号章节另起一页（默认 false）
 )
 
 = 绪论
