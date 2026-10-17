@@ -97,6 +97,10 @@
 // 关键词拼接。
 #let _keywords(items, sep: "；") = items.join(sep)
 
+// 允许封面字段传字符串或字符串数组：数组用于指定封面换行。
+#let _as-lines(value) = if type(value) == array { value } else { (value,) }
+#let _as-text(value) = if type(value) == array { value.join("") } else { value }
+
 //  封面
 #let _cover(
   title: "",
@@ -161,11 +165,76 @@
   align(center, text(size: info-size, date))
 }
 
+// 调研报告封面的多行下划线字段：数组用于指定换行，每个值行单独带下划线。
+#let _cover-lines(label, value) = {
+  let lines = _as-lines(value)
+  let cells = ()
+  for (i, line) in lines.enumerate() {
+    cells.push(if i == 0 { strong(label) } else { [] })
+    cells.push(box(
+      width: 100%,
+      height: 1.25em,
+      stroke: (bottom: 0.5pt),
+      inset: (bottom: 3pt),
+      align(left + horizon, line),
+    ))
+  }
+  cells
+}
+
+// 调研报告封面。
+#let _cover-report(
+  title: "",
+  course: "",
+  class-name: "",
+  supervisor: "",
+  score: "",
+  date: "",
+  logo: "res/jnulogo.png",
+  title-size: 36pt,
+  info-size: 14pt,
+) = {
+  set page(
+    header: none,
+    footer: none,
+    numbering: none,
+    margin: (left: 2.5cm, right: 2.5cm, top: 2.5cm, bottom: 2.5cm),
+  )
+  set text(font: jnu-serif, size: info-size)
+  set par(first-line-indent: 0pt, justify: false, spacing: 0pt)
+
+  align(center, block(image(logo, width: 3.5cm)))
+  v(0.9cm)
+  align(center, text(
+    font: jnu-sans,
+    size: title-size,
+    weight: "bold",
+    tracking: 0.30em,
+  )[学生实践调查报告])
+
+  v(1.8cm)
+
+  align(center, block(width: 430pt, grid(
+    columns: (5em, 1fr),
+    row-gutter: 12pt,
+    align: (left + horizon, left + horizon),
+    .._cover-lines("课程名称：", course),
+    .._cover-lines("调查题目：", title),
+    .._cover-lines("专业班级：", class-name),
+    .._cover-lines("指导老师：", supervisor),
+    .._cover-lines("成绩评分：", score),
+  )))
+
+  v(9.8cm)
+  align(center, text(size: info-size, date))
+}
+
 //  诚信声明
 #let _statement(
   title-size: 22pt,
   body-size: 14pt,
   leading: jnu-leading,
+  report: false,
 ) = {
   set text(font: jnu-serif, size: body-size)
   set par(
@@ -175,19 +244,68 @@
     justify: true,
   )
 
+  let doc-name = if report { "调查报告" } else { "毕业论文" }
+  let doc-short = if report { "报告" } else { "论文" }
+  let declarant = if report { "本人及小组成员" } else { "本人" }
+
   align(center, text(font: jnu-kai, size: title-size, tracking: 0.45em)[诚信声明])
 
   v(2.40cm)
 
-  [我声明，所呈交的毕业论文是本人在老师指导下进行的研究工作及取得的研究成果。据我查证，除了文中特别加以标注和致谢的地方外，论文中不包含其他人已经发表或撰写过的研究成果，也不包含为获得其他教育机构的学位或证书而使用过的材料。我承诺，论文中的所有内容均真实、可信。]
+  [我声明，所呈交的#(doc-name)是#(declarant)在老师指导下进行的研究工作及取得的研究成果。据我查证，除了文中特别加以标注和致谢的地方外，#(doc-short)中不包含其他人已经发表或撰写过的研究成果，也不包含为获得其他教育机构的学位或证书而使用过的材料。我承诺，#(doc-short)中的所有内容均真实、可信。]
 
   v(6.55cm)
 
   grid(
     columns: (1fr, auto),
     align: (left + horizon, right + horizon),
-    [毕业论文作者签名：],
+    [#(doc-name)作者签名：],
     [签名日期：#h(1.8em)年#h(1.8em)月#h(1.8em)日],
+  )
+}
+
+//  调研报告分工表
+#let _division-table(
+  team: (),
+  title-size: 18pt,
+  size: 14pt,
+) = {
+  set page(header: none, footer: none, numbering: none)
+  set text(font: jnu-serif, size: size)
+  set par(first-line-indent: 0pt, justify: false, spacing: 0pt)
+
+  align(center, text(font: jnu-sans, size: title-size, weight: "bold")[分工表])
+  v(1.5cm)
+
+  let members = if team.len() == 0 {
+    (("", "", ""), ("", "", ""), ("", "", ""), ("", "", ""))
+  } else {
+    team.map(member => (
+      member.at("name", default: ""),
+      member.at("student-id", default: ""),
+      member.at("work", default: ""),
+    ))
+  }
+
+  let cells = ()
+  for (i, member) in members.enumerate() {
+    cells += member
+    // 空白行之间加细线，方便打印后手写填写。
+    if team.len() == 0 and i < members.len() - 1 {
+      cells.push(table.hline(stroke: 0.3pt))
+    }
+  }
+
+  table(
+    columns: (1.2fr, 1.6fr, 3.2fr),
+    align: (center + horizon, center + horizon, left + horizon),
+    inset: (x: 8pt, y: 9pt),
+    stroke: none,
+    table.hline(stroke: 1pt),
+    [*姓名*], [*学号*], [*分工*],
+    table.hline(stroke: 0.5pt),
+    ..cells,
+    table.hline(stroke: 1pt),
   )
 }
 
@@ -407,8 +525,14 @@
 
 /// Parameters
 ///
-/// - `title` / `title-en`：中英文论文题目
+/// - `paper-type`：`"thesis"`（默认）或 `"report"`
+/// - `title` / `title-en`：中英文论文题目；报告模式下 `title` 可传字符串数组以指定封面换行
 /// - `short-title`：页眉中的短标题，缺省使用 `title`
+/// - `course` / `class-name` / `score`：调研报告封面的课程名称、专业班级、成绩评分
+///   （`course` 与 `title` 一样可传数组，用于指定封面换行）
+/// - `team`：调研报告分工表，元素形如 `(name: "张三", student-id: "...", work: "资料收集")`；
+///   为空时生成 4 行空白行
+/// - `include-statement` / `include-abstract-en`：`auto` 时论文显示、报告隐藏，也可显式传布尔值
 /// - `abstract` / `abstract-en`：摘要正文（content）
 /// - `keywords` / `keywords-en`：关键词数组
 /// - `bib`：参考文献 .bib 文件路径；设为 `none` 则不自动生成参考文献页
@@ -419,6 +543,13 @@
   title: "",
   title-en: "",
   short-title: none,
+  paper-type: "thesis",
+  course: "",
+  class-name: "",
+  score: "",
+  team: (),
+  include-statement: auto,
+  include-abstract-en: auto,
   college: "",
   major: "",
   author: "",
@@ -436,11 +567,28 @@
   leading: jnu-leading,
   body,
 ) = {
-  let running-title = if short-title == none { title } else { short-title }
+  assert(
+    paper-type in ("thesis", "report"),
+    message: "paper-type 必须是 \"thesis\" 或 \"report\"",
+  )
+
+  let is-report = paper-type == "report"
+  let title-text = _as-text(title)
+  let running-title = if short-title == none { title-text } else { short-title }
+  let show-statement = if include-statement == auto {
+    not is-report
+  } else {
+    include-statement
+  }
+  let show-abstract-en = if include-abstract-en == auto {
+    not is-report
+  } else {
+    include-abstract-en
+  }
   let sz = _resolve-sizes(sizes)
 
   set document(
-    title: title,
+    title: title-text,
     author: author,
     keywords: _keywords(keywords),
   )
@@ -461,36 +609,59 @@
   )
 
   // 封面：无页眉页脚、无页码。
-  _cover(
-    title: title,
-    college: college,
-    major: major,
-    author: author,
-    student-id: student-id,
-    supervisor: supervisor,
-    date: date,
-    logo: logo,
-    title-size: sz.cover-title,
-    info-size: sz.cover-info,
-  )
+  if is-report {
+    _cover-report(
+      title: title,
+      course: course,
+      class-name: class-name,
+      supervisor: supervisor,
+      score: score,
+      date: date,
+      logo: logo,
+      title-size: sz.cover-title,
+      info-size: sz.cover-info,
+    )
+  } else {
+    _cover(
+      title: title-text,
+      college: college,
+      major: major,
+      author: author,
+      student-id: student-id,
+      supervisor: supervisor,
+      date: date,
+      logo: logo,
+      title-size: sz.cover-title,
+      info-size: sz.cover-info,
+    )
+  }
 
   pagebreak()
 
-  // 从诚信声明开始加页眉；前置部分不编页码。
+  // 调研报告：分工表紧接封面，单独一页，无页眉页码。
+  if is-report {
+    _division-table(team: team, title-size: sz.abstract-title, size: sz.body)
+    pagebreak()
+  }
+
+  // 从诚信声明/摘要开始加页眉；前置部分不编页码。
   set page(
     header: _running-header(running-title, size: sz.header),
     footer: none,
     numbering: none,
   )
-  _statement(
-    title-size: sz.statement-title,
-    body-size: sz.statement-body,
-    leading: leading,
-  )
+  if show-statement {
+    _statement(
+      title-size: sz.statement-title,
+      body-size: sz.statement-body,
+      leading: leading,
+      report: is-report,
+    )
+    pagebreak()
+  }
 
-  pagebreak()
   _abstract-cn(
-    title: title,
+    title: title-text,
     abstract: abstract,
     keywords: keywords,
     size: sz.abstract-body,
@@ -499,16 +670,18 @@
   )
 
   pagebreak()
-  _abstract-en(
-    title: title-en,
-    abstract: abstract-en,
-    keywords: keywords-en,
-    size: sz.abstract-body,
-    title-size: sz.abstract-title,
-    leading: leading,
-  )
+  if show-abstract-en {
+    _abstract-en(
+      title: title-en,
+      abstract: abstract-en,
+      keywords: keywords-en,
+      size: sz.abstract-body,
+      title-size: sz.abstract-title,
+      leading: leading,
+    )
+    pagebreak()
+  }
 
-  pagebreak()
   _toc(entry-size: sz.toc-entry, title-size: sz.toc-title)
 
   pagebreak()
