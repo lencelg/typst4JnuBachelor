@@ -1,4 +1,4 @@
-[English](README-en.md) | **简体中文**
+**简体中文** | [English](README-en.md) 
 <h1>暨南大学本科毕业论文 / 调研报告 Typst 模板</h1>
 
 > [!NOTE]

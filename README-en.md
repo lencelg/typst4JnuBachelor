@@ -1,4 +1,4 @@
-[Chinese](README.md) | **English**
+[简体中文](README.md) | **English**
 <h1>Jinan University Undergraduate Thesis / Research Report Typst Template</h1>
 
 > [!NOTE]
