@@ -1,10 +1,10 @@
+[English](README-en.md) | **简体中文**
 <h1>暨南大学本科毕业论文 / 调研报告 Typst 模板</h1>
 
-> ![NOTE]
+> [!NOTE]
 > 
 > 非官方模板
 
-> English version: [README-en.md](README-en.md)
 
 ## 目录
 - [目录](#目录)

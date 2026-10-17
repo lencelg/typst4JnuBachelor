@@ -1,15 +1,13 @@
-# Jinan University Undergraduate Thesis / Research Report Typst Template
+[Chinese](README.md) | **English**
+<h1>Jinan University Undergraduate Thesis / Research Report Typst Template</h1>
 
 > [!NOTE]
 >
 > Unofficial template.
 
-> Chinese version: [README.md](README.md)
-
-Compile with `typst compile main.typ`; the output is `main.pdf`.
-
 ## Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Thesis Mode](#thesis-mode)
 - [Research Report Mode](#research-report-mode)
 - [Parameters](#parameters)
@@ -158,16 +156,11 @@ Default font sizes for `jnu-thesis`:
 | `header` | `10.5pt` | Running header |
 | `footer` | `10.5pt` | Page number |
 
-> `main.typ` currently overrides `body` to `11pt` in `sizes`. Remove `body: 11pt` to restore the default 14pt body text.
-
 ## Other Notes
 
 ### Chapter Page Breaks
 
 `chapter-pagebreak` controls whether **numbered chapters** start on a new page:
-
-- `false` (default): numbered chapters flow continuously. Unnumbered level-1 headings — Conclusion, Acknowledgements, Appendices, References — still start on a new page;
-- `true`: every level-1 heading starts on a new page.
 
 ### References and Citations
 
@@ -177,8 +170,6 @@ Default font sizes for `jnu-thesis`:
 ```typst
 Literate programming is discussed in #cite(<knuth1984>).
 ```
-
-> Typst lists only **cited** entries by default. `main.typ` currently cites `knuth1984` and `lamport1994`, so two entries appear; uncited entries in `refs.bib` are omitted.
 
 ### Three-line Table Example
 
