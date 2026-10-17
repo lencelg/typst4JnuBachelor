@@ -7,6 +7,7 @@
 //    - 版式依据 jnuthesis.pdf 与《暨南大学本科毕业论文（设计）撰写规范》。
 //    - 标题字号按写作规范统一为小三号（15pt）加粗。
 //    - 正文字号四号（14pt），1.5 倍行距，首行缩进 2 字。
+//    - 字号可在 jnu-thesis.with(sizes: (...)) 中逐项覆盖。
 //    - 页边距：左 3cm、右 2cm、上/下 2.5cm。
 // ============================================================================
 
@@ -54,6 +55,41 @@
 // 章标题在页首额外留出的空白（设为 0cm 可让标题紧贴版心顶部）。
 #let jnu-chapter-drop = 0.9cm
 
+// 默认字号表。可在 jnu-thesis.with(sizes: (...)) 中覆盖任意一项，
+// 例如 sizes: (body: 12pt, heading: 14pt, caption: 9pt)。
+// 值为 auto 的项会自动跟随 body（正文字号）。
+#let jnu-default-sizes = (
+  body: jnu-body-size,          // 正文
+  heading: jnu-heading-size,    // 各级标题
+  caption: jnu-caption-size,    // 图、表标题
+  note: jnu-note-size,          // 脚注
+  code: 10.5pt,                 // 代码块
+  cover-title: 36pt,            // 封面“暨南大学 / 本科生毕业论文”
+  cover-info: auto,             // 封面信息栏与日期
+  statement-title: 22pt,        // 诚信声明标题
+  statement-body: auto,         // 诚信声明正文
+  abstract-title: 18pt,         // 中英文摘要标题（论文题目）
+  abstract-body: auto,          // 中英文摘要正文
+  reference: auto,              // 参考文献条目（默认跟随 caption）
+  toc-title: 24pt,              // “目 录”标题
+  toc-entry: auto,              // 目录条目
+  header: 10.5pt,               // 页眉
+  footer: 10.5pt,               // 页码
+)
+
+// 把 auto 项解析为实际字号。
+#let _resolve-sizes(sizes) = {
+  let s = jnu-default-sizes + sizes
+  let pick(value) = if value == auto { s.body } else { value }
+  s + (
+    cover-info: pick(s.cover-info),
+    statement-body: pick(s.statement-body),
+    abstract-body: pick(s.abstract-body),
+    reference: if s.reference == auto { s.caption } else { s.reference },
+    toc-entry: pick(s.toc-entry),
+  )
+}
+
 // ---------------------------------------------------------------------------
 //  内部工具
 // ---------------------------------------------------------------------------
@@ -67,16 +103,16 @@
 )
 
 // 页眉：论文题目居中，下方一条 0.5pt 细线。
-#let _running-header(title) = {
-  set text(font: jnu-serif, size: 10.5pt)
+#let _running-header(title, size: 10.5pt) = {
+  set text(font: jnu-serif, size: size)
   align(center, title)
   v(1.5pt)
   line(length: 100%, stroke: 0.5pt)
 }
 
 // 页脚：居中页码。
-#let _page-footer = context {
-  set text(font: jnu-serif, size: 10.5pt)
+#let _page-footer(size: 10.5pt) = context {
+  set text(font: jnu-serif, size: size)
   align(center, counter(page).display())
 }
 
@@ -102,6 +138,8 @@
   supervisor: "",
   date: "",
   logo: "res/jnulogo.png",
+  title-size: 36pt,
+  info-size: 14pt,
 ) = {
   set page(
     header: none,
@@ -109,15 +147,15 @@
     numbering: none,
     margin: (left: 2.5cm, right: 2.5cm, top: 2.5cm, bottom: 2.5cm),
   )
-  set text(font: jnu-serif, size: jnu-body-size)
+  set text(font: jnu-serif, size: info-size)
   set par(first-line-indent: 0pt, justify: false, spacing: 0pt)
 
   align(center, block(image(logo, width: 4cm)))
   v(1.53cm)
   align(center, block[
-    #set par(leading: 30pt)
-    #text(font: jnu-sans, size: 36pt, tracking: 0.30em)[暨南大学]#linebreak()
-    #text(font: jnu-sans, size: 36pt, tracking: 0.30em)[本科生毕业论文]
+    #set par(leading: 0.83 * title-size)
+    #text(font: jnu-sans, size: title-size, tracking: 0.30em)[暨南大学]#linebreak()
+    #text(font: jnu-sans, size: title-size, tracking: 0.30em)[本科生毕业论文]
   ])
 
   v(4.44cm)
@@ -151,29 +189,33 @@
   )
 
   v(1.82cm)
-  align(center, text(size: jnu-body-size, date))
+  align(center, text(size: info-size, date))
 }
 
 // ---------------------------------------------------------------------------
 //  诚信声明
 // ---------------------------------------------------------------------------
 
-#let _statement() = {
-  set text(font: jnu-serif, size: jnu-body-size)
+#let _statement(
+  title-size: 22pt,
+  body-size: 14pt,
+  leading: jnu-leading,
+) = {
+  set text(font: jnu-serif, size: body-size)
   set par(
     first-line-indent: (amount: 2em, all: true),
-    leading: jnu-leading,
-    spacing: jnu-leading,
+    leading: leading,
+    spacing: leading,
     justify: true,
   )
 
-  align(center, text(font: jnu-kai, size: 22pt, tracking: 0.45em)[诚信声明])
+  align(center, text(font: jnu-kai, size: title-size, tracking: 0.45em)[诚信声明])
 
-  v(2.11cm)
+  v(2.40cm)
 
   [我声明，所呈交的毕业论文是本人在老师指导下进行的研究工作及取得的研究成果。据我查证，除了文中特别加以标注和致谢的地方外，论文中不包含其他人已经发表或撰写过的研究成果，也不包含为获得其他教育机构的学位或证书而使用过的材料。我承诺，论文中的所有内容均真实、可信。]
 
-  v(6.37cm)
+  v(6.55cm)
 
   grid(
     columns: (1fr, auto),
@@ -187,16 +229,23 @@
 //  中文摘要
 // ---------------------------------------------------------------------------
 
-#let _abstract-cn(title: "", abstract: [], keywords: ()) = {
-  set text(font: jnu-serif, size: jnu-body-size)
+#let _abstract-cn(
+  title: "",
+  abstract: [],
+  keywords: (),
+  size: 14pt,
+  title-size: 18pt,
+  leading: jnu-leading,
+) = {
+  set text(font: jnu-serif, size: size)
   set par(
     first-line-indent: (amount: 2em, all: true),
-    leading: jnu-leading,
-    spacing: jnu-leading,
+    leading: leading,
+    spacing: leading,
     justify: true,
   )
 
-  _display-title(title, size: 18pt, font: jnu-sans)
+  _display-title(title, size: title-size, font: jnu-sans)
 
   v(1.1cm)
 
@@ -227,16 +276,23 @@
 //  英文摘要
 // ---------------------------------------------------------------------------
 
-#let _abstract-en(title: "", abstract: [], keywords: ()) = {
-  set text(font: jnu-serif, size: jnu-body-size, lang: "en")
+#let _abstract-en(
+  title: "",
+  abstract: [],
+  keywords: (),
+  size: 14pt,
+  title-size: 18pt,
+  leading: jnu-leading,
+) = {
+  set text(font: jnu-serif, size: size, lang: "en")
   set par(
     first-line-indent: (amount: 2em, all: true),
-    leading: jnu-leading,
-    spacing: jnu-leading,
+    leading: leading,
+    spacing: leading,
     justify: false,
   )
 
-  _display-title(title, size: 18pt, font: jnu-sans)
+  _display-title(title, size: title-size, font: jnu-sans)
 
   v(1.1cm)
 
@@ -267,12 +323,12 @@
 //  目录
 // ---------------------------------------------------------------------------
 
-#let _toc() = {
-  set text(font: jnu-serif, size: jnu-body-size)
+#let _toc(entry-size: 14pt, title-size: 24pt) = {
+  set text(font: jnu-serif, size: entry-size)
   set par(first-line-indent: 0pt, leading: 0.9em, justify: false)
 
   v(2.9cm)
-  _display-title([目　录], size: 24pt, font: jnu-sans)
+  _display-title([目　录], size: title-size, font: jnu-sans)
   v(1.8cm)
 
   show outline.entry: set outline.entry(fill: repeat[·])
@@ -285,12 +341,21 @@
 //  正文样式
 // ---------------------------------------------------------------------------
 
-#let _body-style(body) = {
-  set text(font: jnu-serif, size: jnu-body-size, lang: "zh")
+#let _body-style(
+  body,
+  size: 14pt,
+  heading-size: 15pt,
+  caption-size: 10.5pt,
+  note-size: 9pt,
+  code-size: 10.5pt,
+  reference-size: 10.5pt,
+  leading: jnu-leading,
+) = {
+  set text(font: jnu-serif, size: size, lang: "zh")
   set par(
     first-line-indent: (amount: 2em, all: true),
-    leading: jnu-leading,
-    spacing: jnu-leading,
+    leading: leading,
+    spacing: leading,
     justify: true,
     justification-limits: (
       tracking: (min: -0.012em, max: 0.012em),
@@ -302,7 +367,7 @@
   set heading(numbering: "1.1.1.1")
   show heading: set text(
     font: jnu-serif,
-    size: jnu-heading-size,
+    size: heading-size,
     weight: "bold",
   )
   show heading: set block(above: 1.0em, below: 0.55em)
@@ -327,7 +392,7 @@
     n,
   ))
   set figure.caption(separator: [　])
-  show figure.caption: set text(size: jnu-caption-size)
+  show figure.caption: set text(size: caption-size)
   show figure.caption: set par(
     first-line-indent: 0pt,
     justify: false,
@@ -355,11 +420,11 @@
   )
 
   // ---- 代码块 ----
-  show raw: set text(size: 10.5pt)
+  show raw: set text(size: code-size)
   show raw.where(block: true): set par(leading: 0.55em, justify: false)
 
   // ---- 脚注 ----
-  show footnote.entry: set text(size: jnu-note-size)
+  show footnote.entry: set text(size: note-size)
   show footnote.entry: set par(
     first-line-indent: 0pt,
     leading: 0.6em,
@@ -372,7 +437,7 @@
   show link: set text(fill: black)
 
   // ---- 参考文献 ----
-  show bibliography: set text(size: jnu-caption-size)
+  show bibliography: set text(size: reference-size)
   show bibliography: set par(
     first-line-indent: 0pt,
     leading: 0.75em,
@@ -393,12 +458,15 @@
 /// - `abstract` / `abstract-en`：摘要正文（content）
 /// - `keywords` / `keywords-en`：关键词数组
 /// - `bib`：参考文献 .bib 文件路径；设为 `none` 则不自动生成参考文献页
+/// - `sizes`：字号覆盖，例如 `(body: 12pt, heading: 14pt)`
+/// - `leading`：行距，默认 `0.83em`（约 1.5 倍）
 ///
 /// 示例：
 /// ```typst
 /// #show: jnu-thesis.with(
 ///   title: "论文题目",
 ///   author: "张三",
+///   sizes: (body: 12pt, heading: 14pt),
 ///   ...
 /// )
 /// ```
@@ -418,9 +486,12 @@
   keywords-en: (),
   bib: none,
   logo: "res/jnulogo.png",
+  sizes: (:),
+  leading: jnu-leading,
   body,
 ) = {
   let running-title = if short-title == none { title } else { short-title }
+  let sz = _resolve-sizes(sizes)
 
   set document(
     title: title,
@@ -435,11 +506,11 @@
     numbering: none,
   )
 
-  set text(font: jnu-serif, size: jnu-body-size, lang: "zh")
+  set text(font: jnu-serif, size: sz.body, lang: "zh")
   set par(
     first-line-indent: (amount: 2em, all: true),
-    leading: jnu-leading,
-    spacing: jnu-leading,
+    leading: leading,
+    spacing: leading,
     justify: true,
   )
 
@@ -453,42 +524,71 @@
     supervisor: supervisor,
     date: date,
     logo: logo,
+    title-size: sz.cover-title,
+    info-size: sz.cover-info,
   )
 
   pagebreak()
 
   // 从诚信声明开始加页眉；前置部分不编页码。
   set page(
-    header: _running-header(running-title),
+    header: _running-header(running-title, size: sz.header),
     footer: none,
     numbering: none,
   )
-  _statement()
+  _statement(
+    title-size: sz.statement-title,
+    body-size: sz.statement-body,
+    leading: leading,
+  )
 
   pagebreak()
-  _abstract-cn(title: title, abstract: abstract, keywords: keywords)
+  _abstract-cn(
+    title: title,
+    abstract: abstract,
+    keywords: keywords,
+    size: sz.abstract-body,
+    title-size: sz.abstract-title,
+    leading: leading,
+  )
 
   pagebreak()
-  _abstract-en(title: title-en, abstract: abstract-en, keywords: keywords-en)
+  _abstract-en(
+    title: title-en,
+    abstract: abstract-en,
+    keywords: keywords-en,
+    size: sz.abstract-body,
+    title-size: sz.abstract-title,
+    leading: leading,
+  )
 
   pagebreak()
-  _toc()
+  _toc(entry-size: sz.toc-entry, title-size: sz.toc-title)
 
   pagebreak()
 
   // 正文：页码从 1 开始。
   set page(
-    header: _running-header(running-title),
-    footer: _page-footer,
+    header: _running-header(running-title, size: sz.header),
+    footer: _page-footer(size: sz.footer),
     numbering: "1",
   )
   counter(page).update(1)
-  _body-style({
-    body
-    // 参考文献放在最后（与 jnuthesis.pdf 的顺序一致）。
-    if bib != none {
-      heading(numbering: none, outlined: true)[参考文献]
-      bibliography(bib, style: "gb-7714-2015-numeric", title: none)
-    }
-  })
+  _body-style(
+    {
+      body
+      // 参考文献放在最后（与 jnuthesis.pdf 的顺序一致）。
+      if bib != none {
+        heading(numbering: none, outlined: true)[参考文献]
+        bibliography(bib, style: "gb-7714-2015-numeric", title: none)
+      }
+    },
+    size: sz.body,
+    heading-size: sz.heading,
+    caption-size: sz.caption,
+    note-size: sz.note,
+    code-size: sz.code,
+    reference-size: sz.reference,
+    leading: leading,
+  )
 }

@@ -22,6 +22,26 @@
   keywords: ("毕业论文", "Typst", "排版模板", "暨南大学", "自动化排版"),
   keywords-en: ("Thesis", "Typst", "Typesetting template", "Jinan University", "Automated typesetting"),
   bib: "res/refs.bib",
+  // 字号可按需覆盖（未写的项使用 lib.typ 中的默认值；auto 表示跟随 body）：
+  // sizes: (
+  //   body: 14pt,          // 正文（四号）
+  //   heading: 15pt,       // 各级标题（小三）
+  //   caption: 10.5pt,     // 图、表标题（五号）
+  //   note: 9pt,           // 脚注（小五）
+  //   code: 10.5pt,        // 代码块
+  //   cover-title: 36pt,   // 封面“暨南大学 / 本科生毕业论文”
+  //   cover-info: auto,    // 封面信息栏与日期
+  //   statement-title: 22pt, // 诚信声明标题
+  //   statement-body: auto,  // 诚信声明正文
+  //   abstract-title: 18pt,  // 摘要页论文题目
+  //   abstract-body: auto,   // 摘要正文
+  //   reference: auto,       // 参考文献条目
+  //   toc-title: 24pt,       // 目录标题
+  //   toc-entry: auto,       // 目录条目
+  //   header: 10.5pt,        // 页眉
+  //   footer: 10.5pt,        // 页码
+  // ),
+  // leading: 0.83em,  // 行距，约 1.5 倍
 )
 
 // ============================================================================
