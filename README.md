@@ -4,6 +4,8 @@
 > 
 > 非官方模板
 
+> English version: [README-en.md](README-en.md)
+
 ## 目录
 - [目录](#目录)
 - [论文模式](#论文模式)
