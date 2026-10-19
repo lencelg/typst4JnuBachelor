@@ -535,7 +535,9 @@
 /// - `include-statement` / `include-abstract-en`：`auto` 时论文显示、报告隐藏，也可显式传布尔值
 /// - `abstract` / `abstract-en`：摘要正文（content）
 /// - `keywords` / `keywords-en`：关键词数组
-/// - `bib`：参考文献 .bib 文件路径；设为 `none` 则不自动生成参考文献页
+/// - `bib`：参考文献 `.bib` 路径，或 `bibliography(...)` 返回的内容；设为 `none` 则不自动生成参考文献页。
+///   作为包使用时请传入 `bibliography("res/refs.bib", style: "gb-7714-2015-numeric", title: none)`，
+///   因为字符串路径会在包目录中解析。
 /// - `sizes`：字号覆盖，例如 `(body: 12pt, heading: 14pt)`
 /// - `chapter-pagebreak`：编号章节是否另起一页，默认 `false`
 /// - `leading`：行距，默认 `0.83em`（约 1.5 倍）
@@ -693,13 +695,25 @@
     numbering: "1",
   )
   counter(page).update(1)
+
+  // `bib` 可以是路径（模板与库文件在同一项目时可用），也可以是
+  // `bibliography(...)` 返回的内容。包用户应传入后者，因为字符串路径
+  // 会相对 lib.typ 所在的包目录解析。
+  let bib-content = if bib == none {
+    none
+  } else if type(bib) == str {
+    bibliography(bib, style: "gb-7714-2015-numeric", title: none)
+  } else {
+    bib
+  }
+
   _body-style(
     {
       body
       // 参考文献放在最后（与 jnuthesis.pdf 的顺序一致）。
-      if bib != none {
+      if bib-content != none {
         heading(numbering: none, outlined: true)[参考文献]
-        bibliography(bib, style: "gb-7714-2015-numeric", title: none)
+        bib-content
       }
     },
     size: sz.body,
