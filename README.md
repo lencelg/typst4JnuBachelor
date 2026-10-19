@@ -8,9 +8,23 @@
 > 
 > 非官方模板
 
+## 安装
+
+Typst Universe 包名为 `modern-jnu-thesis`。在空目录中运行：
+
+```sh
+typst init @preview/modern-jnu-thesis:0.1.0
+```
+
+也可以在现有文档中直接导入：
+
+```typst
+#import "@preview/modern-jnu-thesis:0.1.0": jnu-thesis
+```
 
 ## 目录
 - [目录](#目录)
+- [安装](#安装)
 - [论文模式](#论文模式)
 - [调研报告模式](#调研报告模式)
 - [参数说明](#参数说明)
@@ -28,6 +42,8 @@
 默认论文模式，示例：
 
 ```typst
+#import "@preview/modern-jnu-thesis:0.1.0": jnu-thesis
+
 #show: jnu-thesis.with(
   paper-type: "thesis",
   title: "论文题目",
@@ -43,7 +59,7 @@
   abstract-en: [English abstract],
   keywords: ("关键词1", "关键词2"),
   keywords-en: ("Keyword1", "Keyword2"),
-  bib: "res/refs.bib",
+  bib: bibliography("res/refs.bib", style: "gb-7714-2015-numeric", title: none),
 )
 ```
 
@@ -116,7 +132,7 @@
 | `abstract-en` | `[]` | 英文摘要内容 |
 | `keywords` | `()` | 中文关键词数组 |
 | `keywords-en` | `()` | 英文关键词数组 |
-| `bib` | `none` | `.bib` 文件路径；`none` 表示不生成参考文献 |
+| `bib` | `none` | `bibliography(...)` 返回的内容，或 `.bib` 路径；`none` 表示不生成参考文献 |
 | `logo` | `"res/jnulogo.png"` | 封面校徽路径 |
 | `sizes` | `(:)` | 字号覆盖字典，见下一节 |
 | `chapter-pagebreak` | `false` | 编号章节是否另起一页 |

@@ -8,9 +8,24 @@ This template was created with reference to **the PDF file exported from Teacher
 >
 > Unofficial template.
 
+## Installation
+
+The Typst Universe package is named `modern-jnu-thesis`. Run this in an empty directory:
+
+```sh
+typst init @preview/modern-jnu-thesis:0.1.0
+```
+
+You can also import it directly in an existing document:
+
+```typst
+#import "@preview/modern-jnu-thesis:0.1.0": jnu-thesis
+```
+
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Installation](#installation)
 - [Thesis Mode](#thesis-mode)
 - [Research Report Mode](#research-report-mode)
 - [Parameters](#parameters)
@@ -29,6 +44,8 @@ This template was created with reference to **the PDF file exported from Teacher
 This is the default mode. Example:
 
 ```typst
+#import "@preview/modern-jnu-thesis:0.1.0": jnu-thesis
+
 #show: jnu-thesis.with(
   paper-type: "thesis",
   title: "论文题目",
@@ -44,7 +61,7 @@ This is the default mode. Example:
   abstract-en: [English abstract],
   keywords: ("关键词1", "关键词2"),
   keywords-en: ("Keyword1", "Keyword2"),
-  bib: "res/refs.bib",
+  bib: bibliography("res/refs.bib", style: "gb-7714-2015-numeric", title: none),
 )
 ```
 
@@ -119,7 +136,7 @@ To enable them:
 | `abstract-en` | `[]` | English abstract |
 | `keywords` | `()` | Chinese keywords |
 | `keywords-en` | `()` | English keywords |
-| `bib` | `none` | Path to a `.bib` file; `none` disables the bibliography |
+| `bib` | `none` | Content returned by `bibliography(...)`, or a `.bib` path; `none` disables the bibliography |
 | `logo` | `"res/jnulogo.png"` | Cover logo path |
 | `sizes` | `(:)` | Font size overrides; see the next section |
 | `chapter-pagebreak` | `false` | Whether numbered chapters start on a new page |
