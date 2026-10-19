@@ -2,3 +2,7 @@ jnu-*
 jnut*
 *opencode
 main-report.pdf
+
+# Local package-layout tests
+/.typst-packages/
+/.test-*/
