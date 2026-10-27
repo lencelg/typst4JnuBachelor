@@ -35,6 +35,8 @@ typst init @preview/modern-jnu-thesis:0.1.0
   - [章节分页](#章节分页)
   - [参考文献与引用](#参考文献与引用)
   - [三线表示例](#三线表示例)
+- [LICENSE](#LICENSE)
+- [PS](#PS)
 
 ## 论文模式
 `paper-type`: `"thesis"`

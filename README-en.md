@@ -36,6 +36,8 @@ You can also import it directly in an existing document:
   - [Chapter Page Breaks](#chapter-page-breaks)
   - [References and Citations](#references-and-citations)
   - [Three-line Table Example](#three-line-table-example)
+- [LICENSE](#LICENSE)
+- [PS](#PS)
 
 ## Thesis Mode
 
@@ -208,7 +210,8 @@ Literate programming is discussed in #cite(<knuth1984>).
   caption: [排版工具比较],
 )
 ```
-**LICENSE**
+
+# LICENSE
 
 本项目中的 Typst 模板源代码依据 MIT-0 许可证进行授权。
 
