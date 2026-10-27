@@ -22,6 +22,12 @@ typst init @preview/modern-jnu-thesis:0.1.0
 #import "@preview/modern-jnu-thesis:0.1.0": jnu-thesis
 ```
 
+## 预览
+
+![](./thumbnail.png)
+
+![pdf版本](./main.pdf)
+
 ## 目录
 - [目录](#目录)
 - [安装](#安装)

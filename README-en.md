@@ -22,6 +22,12 @@ You can also import it directly in an existing document:
 #import "@preview/modern-jnu-thesis:0.1.0": jnu-thesis
 ```
 
+## Preview
+
+![](./thumbnail.png)
+
+![pdf version](./main.pdf)
+
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
